@@ -32,9 +32,6 @@ namespace Jupiter
 {
     public class Program : ModuleBase<SocketCommandContext>
     {
-        internal string token = "NzgyMjYxMjE3MzM0MDAxNjc0.X8Jnhw.bhUX8IddIWCIEPJGeFM1l3Ow2jY";
-        public static EmbedBuilder emb;
-
         internal DiscordSocketClient cicada_client;
         public static string ProgramLocation = Environment.CurrentDirectory;
         public static string[] insults = { "dumb", "idiot", "stupid", "dumb fuck", "fuck off", "cunt", "pussy", "baka" };
@@ -42,6 +39,8 @@ namespace Jupiter
         public static string timezone;
         public static string username;
         public static string users;
+
+        private static ulong BotID;
 
         public static string old_tz;
 
@@ -53,9 +52,6 @@ namespace Jupiter
             Console.WriteLine(path);
             File.WriteAllLines(path + @"\content.txt", content);
 
-            emb = new EmbedBuilder();
-            emb.WithColor(Discord.Color.DarkBlue);
-
             new Program().MainAsync().GetAwaiter().GetResult();
         }
 
@@ -63,6 +59,25 @@ namespace Jupiter
         {
             var config = new DiscordSocketConfig { MessageCacheSize = 100 };
             cicada_client = new DiscordSocketClient(config);
+
+            string token;
+
+            if (File.Exists(Environment.CurrentDirectory + "\\BotInfo.txt"))
+            {
+                string info = File.ReadAllText(Environment.CurrentDirectory + "\\BotInfo.txt");
+                string[] helper = info.Split('\n');
+
+                token = helper[0].Trim();
+                BotID = ulong.Parse(helper[1].Trim());
+            }
+            else
+            {
+                Console.WriteLine("BotInfo.txt file not detected. Enter bot token: ");
+                token = Console.ReadLine();
+
+                Console.WriteLine("Enter bot ID: ");
+                BotID = ulong.Parse(Console.ReadLine());
+            }
 
             var discord = new DiscordClient(new DiscordConfiguration()
             {
@@ -151,24 +166,7 @@ namespace Jupiter
 
         internal async Task Started()
         {
-
-            //var botSpamChannel = cicada_client.GetGuild(780666678811033640).GetChannel(781568016516251658);
-            //await (botSpamChannel as ISocketMessageChannel).SendMessageAsync("Jupiter loaded and ready to go!");
-            /*ProcessStartInfo info = new ProcessStartInfo();
-            info.FileName = "Lavalinnk.jar";
-            info.WorkingDirectory = "C:/Users/Yakov/source/repos/Cicada 122723/Cicada 122723/bin/Debug/net5.0/LavaLink";
-            info.Arguments = "-jar";*/
-
-            /*
-            Process process = new Process();
-            process.StartInfo.FileName = @"F:\ProjektyProgramování\Cicada 122723\Cicada 122723\Cicada 122723\bin\Debug\net5.0\Lavalinnk.jar";
-            process.StartInfo.Arguments = "-jar";
-            process.Start();*/
             await MusicCommands.InitializeLavalink(cicada_client);
-
-            //Test database
-            var repo = new UserTimeRepository();
-            await repo.RemoveEntry(2);
         }
 
         internal Task Log(LogMessage _Msg)
@@ -297,13 +295,13 @@ namespace Jupiter
         public async Task ReactionRecieved(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel originChannel, SocketReaction reaction)
         {
             //Check, if the reaction wasn't on a help menu
-            if (reaction.UserId != 782261217334001674)
+            if (reaction.UserId != BotID)
             {
                 await HelpCommand.OnReaction(reaction);
             }
             //Check if it wasn't a rock paper scissors game
             //Warning, access restriction violation happens here! Will refactor later.
-            if (RockPaperScissors.GameOver == true && reaction.UserId != 782261217334001674) 
+            if (RockPaperScissors.GameOver == true && reaction.UserId != BotID) 
             {
                 if (reaction.MessageId.ToString().Trim() == RockPaperScissors.RpcMessageId.Trim().ToString())
                 {

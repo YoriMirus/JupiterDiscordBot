@@ -7,25 +7,6 @@ namespace Jupiter
 {
     class Helper
     {
-        public static string getRdsConnection()
-        {
-            var appConfig = ConfigurationManager.AppSettings;
-            string dbName = appConfig["discord"];
-
-            string username = appConfig["theredlord"];
-            string password = appConfig["y325485696"];
-            string port = appConfig["5432"];
-            string hostName = appConfig["discord.cgkmvggpiti5.us-east-2.rds.amazonaws.com"];
-
-            return "Data Source=" + hostName + ";Initial Catalog=" + dbName + ";User ID=" + username + ";Password=" + password + ";";
-        }
-
-        public static string connectionString(string name)
-        {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
-        }
-
-
         public static void ColorWrite(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;

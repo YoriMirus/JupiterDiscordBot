@@ -39,14 +39,14 @@ namespace Jupiter.Repository
         /// <returns></returns>
         protected async Task<IEnumerable<T>> Query(string sql)
         {
-            //try
+            try
             {
                 using (var connection = new SqliteConnection(ConnectionString))
                 {
                     return await connection.QueryAsync<T>(sql);
                 }
             }
-            //catch
+            catch
             {
                 return null;
             }
@@ -69,14 +69,14 @@ namespace Jupiter.Repository
 
         protected async Task Execute(string sql)
         {
-            //try
+            try
             {
                 using (var connection = new SqliteConnection(ConnectionString))
                 {
                     await connection.ExecuteAsync(sql);
                 }
             }
-            //catch
+            catch
             {
                 return;
             }
