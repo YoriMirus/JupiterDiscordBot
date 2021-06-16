@@ -3,11 +3,13 @@ using Lavalink4NET;
 using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
+using Lavalink;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Discord.Audio;
 
 namespace Jupiter.Commands
 {
@@ -54,8 +56,8 @@ namespace Jupiter.Commands
 
                     LavalinkPlayer player = audioService.GetPlayer<LavalinkPlayer>(780666678811033640) ?? await audioService.JoinAsync(780666678811033640, channel_id);
 
-                    var track = await audioService.GetTrackAsync(scQuery, Lavalink4NET.Rest.SearchMode.SoundCloud);
-                    //Console.WriteLine(player + " : " + track.Duration + " : " + player.VoiceChannelId + " : " + track.Title);
+                    var track = await audioService.GetTrackAsync(scQuery, SearchMode.SoundCloud);
+                    Console.WriteLine(player + " : " + track.Duration + " : " + player.VoiceChannelId + " : " + track.Title);
                     double end_time = track.Duration.TotalMilliseconds + 60000;
                     await player.PlayAsync(track, null, TimeSpan.FromMilliseconds(end_time), false);
                     await msg.Channel.SendMessageAsync("Streaming " + "`" + track.Title + "`" + " To: " + "`" + (msg.Author as SocketGuildUser).VoiceChannel.Name + "`");
@@ -63,7 +65,6 @@ namespace Jupiter.Commands
                     Console.WriteLine("Streaming {0} to the channel {1}. duration: {2}", track.Title, (msg.Author as SocketGuildUser).VoiceChannel.Name, track.Duration);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(track.Author);
-
                 }
             }
         }
@@ -83,7 +84,6 @@ namespace Jupiter.Commands
             }
             else
             {
-
                 string yotubeQuery = msg.Content.Replace("$play", "").Trim();
                 if (string.IsNullOrEmpty((msg.Author as SocketGuildUser).VoiceChannel?.Name))
                 {
