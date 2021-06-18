@@ -13,6 +13,20 @@ namespace Jupiter.Commands
 
         }
 
+        [Command("edit")]
+        public async Task Edit(string edit = null)
+        {
+            if(edit == null)
+            {
+                await ReplyAsync("What should I edit the message to?");
+                return;
+            }
+
+            var message = await Context.Channel.SendMessageAsync("test");
+            var messageToSend = Context.Message.Content.Replace("$edit", "");
+            await message.ModifyAsync(x => x.Content = edit);
+        }
+
         [Command("delete")]
         public async Task Delete(int number)
         {

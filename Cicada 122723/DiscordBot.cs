@@ -84,7 +84,7 @@ namespace Jupiter.Services
             //Check, if the reaction wasn't on a help menu
             if (!reaction.User.Value.IsBot)
             {
-                await HelpCommand.OnReaction(reaction);
+                await Help.OnReaction(reaction);
             }
             //Check if it wasn't a rock paper scissors game
             //Warning, access restriction violation happens here! Will refactor later.

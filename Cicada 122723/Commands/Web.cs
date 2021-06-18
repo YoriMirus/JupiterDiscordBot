@@ -1,5 +1,5 @@
 ﻿using Discord;
-using Discord.WebSocket;
+using Discord.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace Jupiter.Commands
 {
-    class GoogleCommand
+    public class Web : ModuleBase<SocketCommandContext>
     {
-        public static async Task GoogleResults(SocketMessage msg)
+        [Command("google")]
+        public async Task GoogleResults(string msg)
         {
-            var message = msg.Content.Trim().Replace("$google ", "").Replace(" ", "+");
+            var message = Context.Message.Content.Trim().Replace("$google ", "").Replace(" ", "+");
             EmbedBuilder google = new EmbedBuilder();
             google.WithColor(Discord.Color.Green);
             google.WithTitle("Google results");
             google.WithDescription($"I searched '{message.Replace("+", " ")}' for you: " + "https://www.google.com/search?q=" + message);
             //google.WithUrl();
-            await msg.Channel.SendMessageAsync(null, false, google.Build());
+            await Context.Channel.SendMessageAsync(null, false, google.Build());
         }
     }
 }

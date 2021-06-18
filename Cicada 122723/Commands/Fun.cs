@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using ICanHazDadJoke.NET;
 using Reddit;
 using Reddit.Things;
 using System;
@@ -18,6 +19,22 @@ namespace Jupiter.Commands
         public Fun()
         {
             
+        }
+
+        [Command("joke")]
+        public async Task Joke()
+        {
+            Helper.ColorWriteLine(RandomJoke.Jokes.JokeAsync("smtn", "smtn").Result.ToString(), ConsoleColor.Magenta);
+            DadJokeClient dad_joke = new DadJokeClient("Jupiter");
+            string joke = dad_joke.GetRandomJokeStringAsync().Result;
+
+            var emb = new EmbedBuilder();
+            emb.WithTitle("Want a joke? How about this one: ");
+            emb.WithDescription(joke);
+            emb.WithColor(Color.Blue);
+
+            await Context.Channel.SendMessageAsync("", false, emb.Build());
+            Helper.ColorWriteLine(joke, ConsoleColor.Red);
         }
 
         [Command("meme")]
