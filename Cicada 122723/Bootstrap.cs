@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Jupiter.Repository;
 using Jupiter.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,7 +37,8 @@ namespace Jupiter
                 .AddSingleton<CommandHandler>()
                 .AddSingleton(commandService)
                 .AddSingleton<LoggingService>()
-                .AddSingleton<DiscordBot>();
+                .AddSingleton<DiscordBot>()
+                .AddSingleton<UserTimeRepository>();
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
