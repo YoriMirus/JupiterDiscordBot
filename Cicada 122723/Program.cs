@@ -1,6 +1,5 @@
 ﻿using System;
 using Discord;
-using Discord.Commands;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Net.Http;
@@ -43,7 +42,7 @@ namespace Jupiter
             }
             else
             {
-                Console.WriteLine("Failed to start Jupitor!");
+                Console.WriteLine("Failed to start Jupiter!");
                 ExitCleanly();
             }
 
