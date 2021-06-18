@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using ICanHazDadJoke.NET;
+using Jupiter.Helpers;
 using Reddit;
 using Reddit.Things;
 using System;
@@ -10,16 +11,11 @@ namespace Jupiter.Commands
 {
     public class Fun : ModuleBase<SocketCommandContext>
     {
-        private static Random _random = new();
+        private static readonly Random _random = new();
 
         private static readonly string[] positiveAnswers = { "It is certain.", "It is decidedly so.", "Without a doubt.", "Yes – definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes." };
         private static readonly string[] neutralAnswers = { "Reply hazy, try again.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again." };
         private static readonly string[] negativeAnswers = { "Don’t count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful." };
-
-        public Fun()
-        {
-            
-        }
 
         [Command("joke")]
         public async Task Joke()

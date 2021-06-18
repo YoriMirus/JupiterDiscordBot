@@ -1,5 +1,6 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
+using Jupiter.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

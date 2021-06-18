@@ -8,6 +8,7 @@ using Discord.Commands;
 using System.Reflection;
 using Jupiter.Commands;
 using Lavalink4NET;
+using Jupiter.Helpers;
 
 namespace Jupiter.Services
 {
@@ -30,9 +31,9 @@ namespace Jupiter.Services
             _client = client;
             _commandService = commandService;
             _audioService = audioService;
+
             _client.UserLeft += UserLeft;
             _client.UserJoined += UserJoined;
-
             _client.Connected += Connected;
             _client.Disconnected += Disconnected;
             _client.Ready += Ready;
@@ -104,33 +105,7 @@ namespace Jupiter.Services
         {
             MessagePrinting(msg);
 
-            //if (msg.Content.StartsWith("$jupiter say")) { await JupiterSayCommand.React(msg); return; }
-            //else if (msg.Content.Trim() == "$users") { await UsersCommand.React(msg); return; }
             //else if (msg.Content.Contains("<@!782261217334001674>") || msg.Content.Contains("<@782261217334001674>")) { await TagCommand.TagBot(msg); return; }  //bot tag
-            //else if (msg.Content.StartsWith("$time")) { await TimeCommands.React(msg); return; }
-            //else if (msg.Content.Trim().StartsWith("$play")) { await MusicCommands.Play(msg, _client); }
-            //else if (msg.Content.ToLower().Trim().StartsWith("$quit")) { await MusicCommands.Quit(msg); return; }
-            //else if (msg.Content.Trim().StartsWith("$scplay")) { await MusicCommands.SoundCloudPlay(msg); return; }
-            //else if (msg.Content.ToLower().Trim().StartsWith("$stop")) { await MusicCommands.Stop(msg); return; }
-            //else if (msg.Content.ToLower().Trim().StartsWith("$resume")) { await MusicCommands.Resume(msg); return; }
-            //else if (msg.Content.ToLower().Trim().StartsWith("$pause")) { await MusicCommands.Pause(msg); return; }
-            //else if (msg.Content.StartsWith("$delete")) { await DeleteCommand.Delete(msg); return; }
-            //else if (msg.Content == "$registered_users") { await RegisteredUsersCommand.Display(msg); return; }
-            //else if (msg.Content.StartsWith("$set-tz")) { await SetTimeZoneCommand.SetTimeZone(msg); return; }
-            //else if (msg.Content.ToLower().Trim() == "$utc") { await TimeCommands.UtcTime(msg); return; }
-            //else if (msg.Content.Trim().ToLower().Contains("$warn")) { await WarnCommand.Warn(msg); return; }
-            //else if (msg.Content.Trim().ToLower() == "$help" || msg.Content.Trim().ToLower() == "$menu") { await HelpCommand.DisplayHelpMenu(msg); return; }
-            //else if (msg.Content.Trim().StartsWith("$activity")) { await ActivityCommand.Activity(msg, _client); return; 
-            //else if (msg.Content.Trim().ToLower() == "$joke") { await JokeCommand.React(msg); return; }
-            //else if (msg.Content.Trim().ToLower() == "$meme") { await MemeCommand.React(msg); return; }
-            //else if (msg.Content.Trim().Contains("$edit")) { await EditCommand.React(msg); return; }
-            //else if (msg.Content.Trim().ToLower().Contains("$rps")) { await RockPaperScissors.Start(msg); return; }
-            //else if (msg.Content.StartsWith("$8ball")) { await Ball.React(msg); return; }
-            //else if (msg.Content.Trim() == "$rr") { await RussianRoulette.React(msg); return; }
-            //else if (msg.Content.StartsWith("$rand")) { await RandCommand.React(msg); return; }
-            //else if (msg.Content.ToLower().Trim().StartsWith("$google")) { await GoogleCommand.GoogleResults(msg); return; }
-            //else if (msg.Content.StartsWith("$ttt")) { await TicTacToe.React(msg); return; }
-
             return Task.CompletedTask;
         }
 

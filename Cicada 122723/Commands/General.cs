@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Jupiter.Helpers;
 using Jupiter.Repository;
 using Jupiter.Repository.Models;
 using System;
@@ -95,7 +96,8 @@ namespace Jupiter.Commands
             await Context.Channel.SendMessageAsync("", false, emb.Build());
         }
 
-        [Command("say")]
+        [Command("jupiter say")]
+        [Alias("say")]
         public async Task say(string say = null)
         {
             if(say == null)

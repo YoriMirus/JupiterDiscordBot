@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jupiter
+namespace Jupiter.Helpers
 {
     class Helper
     {

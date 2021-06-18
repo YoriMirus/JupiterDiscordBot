@@ -1,23 +1,17 @@
 ﻿using Discord.WebSocket;
 using Lavalink4NET;
-using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Player;
 using Lavalink4NET.Rest;
-using Lavalink;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Discord.Audio;
 using Discord.Commands;
+using Jupiter.Helpers;
 
 namespace Jupiter.Commands
 {
     public class MusicCommands : ModuleBase<SocketCommandContext>
     {
-        //static LavalinkNode audioService;
-        static LavalinkQueue queue = new LavalinkQueue();
+        private static LavalinkQueue queue = new LavalinkQueue();
         private readonly IAudioService _audioService;
         private readonly DiscordSocketClient _client;
 
@@ -29,6 +23,7 @@ namespace Jupiter.Commands
         }
 
         [Command("scplay")]
+        // TODO always returns null
         public async Task SoundCloudPlay([Remainder]string song)
         {
             Helper.ColorWriteLine($"this is a text", ConsoleColor.DarkCyan);
@@ -218,17 +213,5 @@ namespace Jupiter.Commands
                 await player.StopAsync(disconnect: true);
             }
         }
-
-        //public static async Task InitializeLavalink(DiscordSocketClient cicada_client)
-        //{
-        //    audioService = new LavalinkNode(new LavalinkNodeOptions
-        //    {
-        //        RestUri = "http://localhost:2333/",
-        //        WebSocketUri = "ws://localhost:2333/",
-        //        Password = "youshallnotpass",
-        //        DisconnectOnStop = false
-        //    }, new DiscordClientWrapper(cicada_client));
-        //    await audioService.InitializeAsync();
-        //}
     }
 }

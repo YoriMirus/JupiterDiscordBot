@@ -8,11 +8,6 @@ namespace Jupiter.Commands
 {
     public class Moderation : ModuleBase<SocketCommandContext>
     {
-        public Moderation()
-        {
-
-        }
-
         [RequireOwner]
         [Command("warn")]
         public async Task Warn(SocketUser user, [Remainder]string warning = null)

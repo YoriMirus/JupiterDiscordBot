@@ -11,8 +11,6 @@ namespace Jupiter
 {
     public class Program
     {
-        public static string[] insults = { "dumb", "idiot", "stupid", "dumb fuck", "fuck off", "cunt", "pussy", "baka" };
-
         static async Task Main(string[] args)
         {
             var serviceProvider = Bootstrap.Initialize(args);
@@ -71,7 +69,6 @@ namespace Jupiter
         }
 
     
-        public static Emoji cat_thumbs_up = new Emoji("<:cat_thumbs_up:797442808470306826>");
 
         async Task<System.Drawing.Image> FetchImage(string url)
         {

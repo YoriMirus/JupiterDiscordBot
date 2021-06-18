@@ -1,9 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
+using Jupiter.Commands;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Jupiter.Services
@@ -39,6 +37,13 @@ namespace Jupiter.Services
                 return;
             }
 
+            int position = 0;
+            // Comment out this if to enable @jupiter {command} but break the tag feature
+            if (message.HasMentionPrefix(_client.CurrentUser, ref position))
+            {
+                await TagCommand.TagBot(messageParam);
+            }
+
             var channel = message.Channel as SocketGuildChannel;
             var prefix = String.Empty;
 
@@ -48,8 +53,7 @@ namespace Jupiter.Services
             }
 
             var context = new SocketCommandContext(_client, message);
-            int position = 0;
-
+           
             if (message.HasStringPrefix(prefix, ref position)
                 || message.HasMentionPrefix(_client.CurrentUser, ref position))
             {
