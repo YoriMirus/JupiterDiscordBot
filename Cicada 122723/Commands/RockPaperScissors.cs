@@ -1,4 +1,5 @@
-﻿using Discord.WebSocket;
+﻿using Discord.Commands;
+using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace Jupiter.Commands
 {
-    static class RockPaperScissors
+    public class RockPaperScissors : ModuleBase<SocketCommandContext>
     {
-        static Discord.Rest.RestUserMessage message;
+        public static Discord.Rest.RestUserMessage message;
         public static string RpcMessageId;
         public static bool GameOver { get; private set; }
 
-        public static async Task Start(SocketMessage msg)
+        [Command("RockPaperScissors")]
+        [Alias("rps")]
+        public async Task Rps()
         {
-            message = await msg.Channel.SendMessageAsync("Loading game...");
+            message = await Context.Message.Channel.SendMessageAsync("Loading game...");
             var Rock = new Discord.Emoji(@"🪨");
             var Scissors = new Discord.Emoji(@"✂️");
             var Paper = new Discord.Emoji(@"🧻");
