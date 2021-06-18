@@ -3,6 +3,8 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Jupiter.Repository;
 using Jupiter.Services;
+using Lavalink4NET;
+using Lavalink4NET.DiscordNet;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jupiter
@@ -31,9 +33,26 @@ namespace Jupiter
                 ExclusiveBulkDelete = true,
             });
 
+            //var audioService = new LavalinkNode(new LavalinkNodeOptions
+            //{
+            //    RestUri = "http://localhost:8080/",
+            //    WebSocketUri = "ws://localhost:8080/",
+            //    Password = "youshallnotpass"
+            //}, new DiscordClientWrapper(socketClient));
+
             var serviceCollection = new ServiceCollection();
             serviceCollection
+                .AddSingleton<IAudioService, LavalinkNode>()
                 .AddSingleton(socketClient)
+                .AddSingleton<IAudioService, LavalinkNode>()
+                .AddSingleton<IDiscordClientWrapper, DiscordClientWrapper>()
+                .AddSingleton(new LavalinkNodeOptions
+                {
+                    RestUri = "http://localhost:2333/",
+                    WebSocketUri = "ws://localhost:2333/",
+                    //Password = "youshallnotpass"
+                    Password = "notarealpassword"
+                })
                 .AddSingleton<CommandHandler>()
                 .AddSingleton(commandService)
                 .AddSingleton<LoggingService>()

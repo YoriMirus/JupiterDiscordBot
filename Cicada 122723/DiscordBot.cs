@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System.Reflection;
 using Jupiter.Commands;
+using Lavalink4NET;
 
 namespace Jupiter.Services
 {
@@ -18,15 +19,17 @@ namespace Jupiter.Services
         private readonly IServiceProvider _serviceProvider;
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commandService;
+        private readonly IAudioService _audioService;
 
         public DiscordBot(IServiceProvider serviceProvider,
             DiscordSocketClient client,
-            CommandService commandService)
+            CommandService commandService,
+            IAudioService audioService)
         {
             _serviceProvider = serviceProvider;
             _client = client;
             _commandService = commandService;
-
+            _audioService = audioService;
             _client.UserLeft += UserLeft;
             _client.UserJoined += UserJoined;
 
@@ -145,7 +148,8 @@ namespace Jupiter.Services
             if (LavalinkServerProcess == null)
                 await Connected();
 
-            await MusicCommands.InitializeLavalink(_client);
+            //await MusicCommands.InitializeLavalink(_client);
+            await _audioService.InitializeAsync();
         }
         private async Task Connected()
         {
