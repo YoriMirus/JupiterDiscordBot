@@ -50,8 +50,7 @@ namespace Jupiter
                 {
                     RestUri = "http://localhost:2333/",
                     WebSocketUri = "ws://localhost:2333/",
-                    //Password = "youshallnotpass"
-                    Password = "notarealpassword"
+                    Password = "youshallnotpass"
                 })
                 .AddSingleton<CommandHandler>()
                 .AddSingleton(commandService)
