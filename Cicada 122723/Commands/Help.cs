@@ -11,6 +11,7 @@ namespace Jupiter.Commands
         public static ulong helpmenuMessageId;
 
         [Command("help")]
+        [Alias("menu")]
         public async Task DisplayHelpMenu()
         {
             var embed = new EmbedBuilder();
