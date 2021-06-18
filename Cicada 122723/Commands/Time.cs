@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using Jupiter.Repository;
 using Jupiter.Repository.Models;
 using System;
@@ -33,30 +34,37 @@ namespace Jupiter.Commands
         public async Task TimeCommand(string text = null)
         {
             if (string.IsNullOrEmpty(text))
-                await MsgAuthorTime();
+                await MsgAuthorTime(Context.User);
             else if (text.ToLower() == "everyone")
                 await TimeEveryone();
         }
 
-        private async Task MsgAuthorTime()
+        [Command("time")]
+        public async Task TimeCommand(SocketUser user)
+        {
+            await MsgAuthorTime(user);
+        }
+
+        private async Task MsgAuthorTime(SocketUser userToLookup)
         {
             var repo = new UserTimeRepository();
-            IEnumerable<UserTimeModel> foundUsers = (await repo.GetAllEntries()).Where(x => x.Mention == Context.Message.Author.Mention);
+            IEnumerable<UserTimeModel> foundUsers = (await repo.GetAllEntries()).Where(x => x.Mention == userToLookup.Mention);
 
             var emb = new EmbedBuilder();
 
             //If collection found nothing, add to database
             if (!foundUsers.Any())
             {
-                emb.WithTitle("Listing time for " + Context.Message.Author.Username + ".");
+                emb.WithTitle(userToLookup.Username + " has not registered. UTC time is:");
                 emb.WithDescription(DateTime.UtcNow.ToLongTimeString());
 
-                await repo.AddEntry(new UserTimeModel() { Mention = Context.Message.Author.Mention, TimeZone = "UTC", Username = Context.Message.Author.Username });
+                // Is this a good option?
+                //await repo.AddEntry(new UserTimeModel() { Mention = userToLookup.Mention, TimeZone = "UTC", Username = Context.Message.Author.Username });
             }
             else if (foundUsers.Count() == 1)
             {
                 UserTimeModel user = foundUsers.First();
-                emb.WithTitle("Listing time for " + Context.Message.Author.Username);
+                emb.WithTitle("Listing time for " + userToLookup.Username);
 
                 emb.WithDescription((DateTime.UtcNow + user.GetTimeSpan()).ToLongTimeString());
             }
