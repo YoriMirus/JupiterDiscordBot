@@ -1,73 +1,77 @@
 ﻿using System;
 using Discord;
 using Discord.Commands;
-using Discord.Audio;
-using Discord.WebSocket;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using DSharpPlus;
-using Lavalink4NET.Rest;
-using Lavalink4NET;
-using Lavalink4NET.Player;
-using Lavalink4NET.DiscordNet;
-using Reddit;
-using Reddit.Controllers;
-//using Reddit.Models;
-using Reddit.Things;
-using System.Diagnostics;
-using System.IO;
-using System.Drawing.Printing;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Net.Http;
 using System.Drawing.Drawing2D;
-using GoogleApi;
-
-using Jupiter.Commands;
-using Jupiter.Repository;
-using Jupiter.Repository.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Jupiter.Services;
 
 namespace Jupiter
 {
-    public class Program : ModuleBase<SocketCommandContext>
+    public class Program
     {
-        internal DiscordSocketClient cicada_client;
-        public static string ProgramLocation = Environment.CurrentDirectory;
         public static string[] insults = { "dumb", "idiot", "stupid", "dumb fuck", "fuck off", "cunt", "pussy", "baka" };
-
-        public static string timezone;
-        public static string username;
-        public static string users;
-
-        public static string old_tz;
 
         static async Task Main(string[] args)
         {
-            // string sqlConection = "Data Source = (LocalDB)/MSSQLLocalDB; AttachDbFilename = C:/Users/Yakov/source/repos/Cicada 122723/Cicada 122723/Database1.mdf; Integrated Security = True";
-            string[] content = { "hello\nworld" };
-            string path = Directory.GetCurrentDirectory();
-            Console.WriteLine(path);
-            File.WriteAllLines(path + @"\content.txt", content);
+            var serviceProvider = Bootstrap.Initialize(args);
+            var discordService = serviceProvider.GetRequiredService<DiscordBot>();
 
-            string token;
-
-            if (File.Exists(Environment.CurrentDirectory + "\\BotInfo.txt"))
+            if (discordService != null)
             {
-                string info = File.ReadAllText(Environment.CurrentDirectory + "\\BotInfo.txt");
+                try
+                {
+                    await Task.Run(discordService.Start);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Unhandeled Exception Caught!");
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.StackTrace);
 
-                token = info.Trim();
+                    while (e.InnerException != null)
+                    {
+                        e = e.InnerException;
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.StackTrace);
+                    }
+
+                    ExitCleanly();
+                }
             }
             else
             {
-                Console.WriteLine("BotInfo.txt file not detected. Enter bot token: ");
-                token = Console.ReadLine();
+                Console.WriteLine("Failed to start Jupitor!");
+                ExitCleanly();
             }
 
-            await DiscordBot.InitializeAsync(token);
-            await Task.Delay(-1);
+            while (true)
+            {
+                // If the "Q" key is pressed quit the bot!
+                Console.WriteLine("Press 'Q' to quit!");
+                var key = Console.ReadKey(true).KeyChar;
+
+                if (char.ToLowerInvariant(key) == 'q')
+                {
+                    break;
+                }
+            }
+            ExitCleanly();
         }
 
+        /// <summary>
+        /// Attempt to kill the bot cleanly.
+        /// </summary>
+        /// <param name="exitCode">Exit code to pass to the OS</param>
+        public static void ExitCleanly(int exitCode = 0)
+        {
+            Console.WriteLine("Jupitor Bot is quiting!");
+            Environment.Exit(exitCode);
+        }
+
+    
         public static Emoji cat_thumbs_up = new Emoji("<:cat_thumbs_up:797442808470306826>");
 
         async Task<System.Drawing.Image> FetchImage(string url)
