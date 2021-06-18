@@ -19,7 +19,7 @@ namespace Jupiter.Commands
         {
             EmbedBuilder emb = new EmbedBuilder();
 
-            if (Context.Message.Author.Username == "TheRedLord" || Context.Message.Author.Username ==  "JoyfulReaper")
+            if (Context.Message.Author.Username == "TheRedLord")
             {
                 Console.WriteLine("the warning: " + warning);
 
@@ -117,6 +117,8 @@ namespace Jupiter.Commands
             await message.ModifyAsync(x => x.Content = edit);
         }
 
+        [RequireBotPermission(GuildPermission.ManageMessages)]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
         [Command("delete")]
         public async Task Delete(int number)
         {
