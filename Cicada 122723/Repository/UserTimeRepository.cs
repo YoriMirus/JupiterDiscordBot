@@ -8,7 +8,7 @@ using Jupiter.Repository.Models;
 
 namespace Jupiter.Repository
 {
-    class UserTimeRepository : Repository<UserTimeModel>
+    public class UserTimeRepository : Repository<UserTimeModel>
     {
         public async override Task AddEntry(UserTimeModel entry)
         {

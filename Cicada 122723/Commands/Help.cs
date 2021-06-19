@@ -1,19 +1,18 @@
 ﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Jupiter.Commands
 {
-    class HelpCommand
+    public class Help : ModuleBase<SocketCommandContext>
     {
         public static Discord.Rest.RestUserMessage helpMenuMessage;
         public static ulong helpmenuMessageId;
 
-        public static async Task DisplayHelpMenu(SocketMessage msg)
+        [Command("help")]
+        [Alias("menu")]
+        public async Task DisplayHelpMenu()
         {
             var embed = new EmbedBuilder();
             embed.WithColor(Color.Teal);
@@ -25,7 +24,7 @@ namespace Jupiter.Commands
             embed.AddField("$utc", "Will Print The UTC Time");
             embed.AddField("$warn [user] for [reason]", "Currentley not working. This Command is Under Technical Maintenance");
             embed.AddField("$menu / $help", "Like Duh");
-            helpMenuMessage = await msg.Channel.SendMessageAsync(null, false, embed.Build());
+            helpMenuMessage = await Context.Channel.SendMessageAsync(null, false, embed.Build());
             helpmenuMessageId = helpMenuMessage.Id;
             var rightArrow = new Emoji(@"➡️");
             var watch = new Emoji(@"⌚");
@@ -55,8 +54,8 @@ namespace Jupiter.Commands
                     IUser Jupiter = await reaction.Channel.GetUserAsync(782261217334001674);
                     await helpMenuMessage.RemoveAllReactionsAsync();
                     var leftArrow = new Emoji(@"⬅️");
-                    helpMenuMessage.AddReactionAsync(info);
-                    helpMenuMessage.AddReactionAsync(musicNotes);
+                    await helpMenuMessage.AddReactionAsync(info);
+                    await helpMenuMessage.AddReactionAsync(musicNotes);
                 }
                 else if (reaction.MessageId == helpmenuMessageId && reaction.Emote.Name == @"ℹ️")
                 {
@@ -87,7 +86,7 @@ namespace Jupiter.Commands
                     embed.AddField("$resume", "Will Resume Playing The Paused Song");
                     await helpMenuMessage.ModifyAsync(msg => msg.Embed = embed.Build());
                     await helpMenuMessage.RemoveAllReactionsAsync();
-                    helpMenuMessage.AddReactionAsync(info);
+                    await helpMenuMessage.AddReactionAsync(info);
                     await helpMenuMessage.AddReactionAsync(watch);
                 }
             }

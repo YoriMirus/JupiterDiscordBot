@@ -1,4 +1,6 @@
-﻿using Discord.WebSocket;
+﻿using Discord.Commands;
+using Discord.WebSocket;
+using Jupiter.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Jupiter.Commands
 {
-    static class TicTacToe
+    public class TicTacToe : ModuleBase<SocketCommandContext>
     {
         static int move;
         static string winner = "";
@@ -18,15 +20,19 @@ namespace Jupiter.Commands
         public static string[] tictactoe = { "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty" };
         //                              1,a      1,b      1,c      2,a      2,b      2,c      3,a      3,b      3,c
         //                               0        1        2        3        4        5        6        7        8
-        public static async Task React(SocketMessage msg)
+
+        [Command("tictactoe")]
+        [Alias("ttt")]
+        public async Task TicTacToeCommand(string content = null)
         {
+            var msg = Context.Message;
             if (msg.Author.Id != 782261217334001674 && winner == "")
             {
                 //var X = ":x:";
                 //var O = ":o:";
                 var final_message = "";
                 var empty = "             ";
-                var content = msg.Content.Replace("$ttt", "");
+                //var content = msg.Content.Replace("$ttt", "");
                 if (string.IsNullOrEmpty(content))
                 {
                     await msg.Channel.SendMessageAsync("Grid:" + "\n" + "A,B,C" + "\n" + "1 " + "\n" + "2 " + "\n" + "3 ");
@@ -93,42 +99,42 @@ namespace Jupiter.Commands
                     if (tictactoe[0] == tictactoe[1] && tictactoe[1] == tictactoe[2]) // first row
                     {
                         Helper.ColorWrite("1 has been called" + tictactoe[0] + " - " + tictactoe[1] + " - " + tictactoe[2], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 1, move);
+                        TicTacToeWinner(msg, 1, move);
                     }
                     else if (tictactoe[3] == tictactoe[4] && tictactoe[4] == tictactoe[5]) // second row
                     {
                         Helper.ColorWrite("2 has been called" + tictactoe[3] + " - " + tictactoe[4] + " - " + tictactoe[5], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 4, move);
+                        TicTacToeWinner(msg, 4, move);
                     }
                     else if (tictactoe[6] == tictactoe[7] && tictactoe[7] == tictactoe[8]) // third row
                     {
                         Helper.ColorWrite("3 has been called" + tictactoe[6] + " - " + tictactoe[7] + " - " + tictactoe[8], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 7, move);
+                        TicTacToeWinner(msg, 7, move);
                     }
                     else if (tictactoe[0] == tictactoe[3] && tictactoe[3] == tictactoe[6]) // first column
                     {
                         Helper.ColorWrite("4 has been called" + tictactoe[0] + " - " + tictactoe[3] + " - " + tictactoe[6], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 3, move);
+                        TicTacToeWinner(msg, 3, move);
                     }
                     else if (tictactoe[1] == tictactoe[4] && tictactoe[4] == tictactoe[7]) // second column
                     {
                         Helper.ColorWrite("5 has been called" + tictactoe[1] + " - " + tictactoe[4] + " - " + tictactoe[7], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 4, move);
+                        TicTacToeWinner(msg, 4, move);
                     }
                     else if (tictactoe[2] == tictactoe[5] && tictactoe[5] == tictactoe[8]) // third column
                     {
                         Helper.ColorWrite("6 has been called" + tictactoe[2] + " - " + tictactoe[5] + " - " + tictactoe[8], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 3, move);
+                        TicTacToeWinner(msg, 3, move);
                     }
                     else if (tictactoe[0] == tictactoe[4] && tictactoe[4] == tictactoe[8]) // left to right diagonal
                     {
                         Helper.ColorWrite("7 has been called" + tictactoe[0] + " - " + tictactoe[4] + " - " + tictactoe[8], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 4, move);
+                        TicTacToeWinner(msg, 4, move);
                     }
                     else if (tictactoe[2] == tictactoe[4] && tictactoe[4] == tictactoe[6]) // right to left diagonal
                     {
                         Helper.ColorWrite("8 has been called" + tictactoe[2] + " - " + tictactoe[4] + " - " + tictactoe[6], ConsoleColor.Red);
-                        await TicTacToeWinner(msg, 4, move);
+                        TicTacToeWinner(msg, 4, move);
                     }
 
                     for (int i = 0; i < 9; i++)
@@ -182,7 +188,7 @@ namespace Jupiter.Commands
             }
         }
 
-        public static async Task TicTacToeWinner(SocketMessage msg, int o, int move)
+        private static void TicTacToeWinner(SocketMessage msg, int o, int move)
         {
             var random = new Random();
             if (tictactoe[o] == "x")

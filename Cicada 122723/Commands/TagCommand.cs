@@ -1,11 +1,8 @@
 ﻿using Discord.WebSocket;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using Jupiter;
+using Jupiter.Helpers;
+using Discord;
 
 namespace Jupiter.Commands
 {
@@ -14,6 +11,9 @@ namespace Jupiter.Commands
     /// </summary>
     static class TagCommand
     {
+        private static string[] insults = { "dumb", "idiot", "stupid", "dumb fuck", "fuck off", "cunt", "pussy", "baka" };
+        private static Emoji cat_thumbs_up = new Emoji("<:cat_thumbs_up:797442808470306826>");
+
         public static async Task TagBot(SocketMessage source)
         {
             Helper.ColorWrite(source.Content.Length.ToString(), ConsoleColor.Red);
@@ -22,13 +22,13 @@ namespace Jupiter.Commands
             string[] checkup = { "how are you", "hbu", "how about you", "whats up", "what's up", "sup" };
             string[] response_to_checkup = { "How about you?", "And you?", "hbu?", "wbu?" };
             string[] response_to_checkupQuestion = { "I'm Great!", "I'm awesome", "I feel amazing", "I am fine", "I'm good", "I never felt better", "Im' in best mood I ever had" };
-            for (int i = 0; i < Program.insults.Length; i++)
+            for (int i = 0; i < insults.Length; i++)
             {
-                if (source.Content.ToLower().Trim().Contains(Program.insults[i]))
+                if (source.Content.ToLower().Trim().Contains(insults[i]))
                 {
                     Console.WriteLine("insult");
                     string message = source.Content;
-                    source.Channel.SendMessageAsync(Program.cat_thumbs_up.ToString());
+                    await source.Channel.SendMessageAsync(cat_thumbs_up.ToString());
                 }
             }
 

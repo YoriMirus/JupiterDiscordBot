@@ -13,7 +13,7 @@ using Jupiter.Repository.Interfaces;
 
 namespace Jupiter.Repository
 {
-    abstract class Repository<T> : IRepository<T> where T : DatabaseObject
+    public abstract class Repository<T> : IRepository<T> where T : DatabaseObject
     {
         public abstract Task AddEntry(T entry);
         public abstract Task EditEntry(T entry);
